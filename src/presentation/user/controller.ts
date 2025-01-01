@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "../services";
-import { CustomError } from "../../domain";
+import { CustomError, UserDTO } from "../../domain";
 
 export class UserController {
 
@@ -22,6 +22,14 @@ export class UserController {
 
 
     public updateUser = (req: Request, res: Response) => {
-        res.json("updateUser")
-    }
+        const [error, userDto] = UserDTO.update(req.body);
+        if(error) {
+            res.status(400).json({ error });
+            return
+        }
+
+        this.userService.updatedUser(userDto!, req.body.user.id)
+            .then(response => res.json( response ))
+            .catch( error => this.handleError(error, res));
+     }
 }
