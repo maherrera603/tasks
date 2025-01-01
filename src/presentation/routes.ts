@@ -1,13 +1,15 @@
 import { Router } from "express";
 import { AuthRoutes } from "./auth";
+import { UserRoutes } from "./user";
 
 export class AppRoutes {
 
     static get routes(): Router{
         const router = Router();
         
-
-        router.use("/api/v1", AuthRoutes.routes );
+        const apiEndPoint = "/api/v1";
+        router.use( apiEndPoint, AuthRoutes.routes );
+        router.use( apiEndPoint, UserRoutes.routes );
         
 
         return router;

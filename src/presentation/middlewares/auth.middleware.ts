@@ -8,26 +8,39 @@ export class AuthMiddleware {
 
     static async validateJWT (req: Request, res: Response, next: NextFunction) {
         const autorization = req.header("Authorization");
-        if(!autorization) return res.status(401).json({error: "No token provided"});
-        if(!autorization.startsWith("Bearer ")) return res.status(401).json({error: "Invalid bearer token"});
+        if(!autorization) {
+            res.status(401).json({error: "No token provided"});
+            return
+        }
+        if(!autorization.startsWith("Bearer ")) {
+            res.status(401).json({error: "Invalid bearer token"});
+            return;
+        }
 
-        const token = autorization.split(" ").at(1) || "";
+        const token = autorization.split(" ").at(-1) || "";
 
         try {
             const payload = await JWTAdapter.validatedToken<{user: string}>(token, envs.JWT_SEED);
-            if(!payload) return res.status(401).json({error: "Invalid Token"});
+            if(!payload) { 
+                res.status(401).json({error: "Invalid Token"});
+                return;
+            }
 
 
             const user = await UserModel.findById(payload.user);
-            if(!user) return res.status(401).json({error: "Invalid token"});
+            if(!user) {
+                res.status(401).json({error: "Invalid token"});
+                return;
+            }
 
             const {password, ...datauser} = UserEntity.fromObject(user);
-            console.log(datauser);
+            req.body.user = datauser;
 
             next();
 
         }catch(error){
-            return res.status(500).json({error: "Internal Server"});
+            res.status(500).json({error: "Internal Server"});
+            return 
         }
 
     }
