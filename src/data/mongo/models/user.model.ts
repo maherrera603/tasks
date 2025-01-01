@@ -32,7 +32,7 @@ const userSchema = new Schema({
 
 userSchema.set("toJSON", {
     virtuals: true,
-    versionKey: false,
+    versionKey: true,
     transform: function(doc, ret, options) {
         delete ret._id;
         delete ret.password;
