@@ -13,10 +13,8 @@ export class UserRoutes {
         const userService = new UserService();
         const controller = new UserController(userService);
 
-        router.use( AuthMiddleware.validateJWT );
-
-        router.get( "/user/", controller.getUser );
-        router.put( "/user/", controller.updateUser );
+        router.get( "/user/", [ AuthMiddleware.validateJWT ], controller.getUser );
+        router.put( "/user/", [ AuthMiddleware.validateJWT ], controller.updateUser );
 
         return router;
     }
