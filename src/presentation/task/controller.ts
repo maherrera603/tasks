@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { CustomError, TaskDTO } from "../../domain";
 import { TaskService } from "../services";
+import { json } from "stream/consumers";
 
 
 export class TaskController {
@@ -28,7 +29,11 @@ export class TaskController {
 
 
     public getTask = (req: Request, res: Response) => {
-        res.json("getTasks");
+        const { id } = req.params;
+
+        this.taskService.getTask( id )
+            .then( response => res.json( response))
+            .catch( error => this.handleError(error, res))
     }
 
 

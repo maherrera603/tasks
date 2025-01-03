@@ -35,5 +35,14 @@ export class TaskService {
         }
     }
 
+    public async getTask(id: string) {
+        try {
+            const task = await TaskModel.findById(id);
+            return { task }
+        } catch (error) {
+            throw CustomError.notFound(`task not found with id: ${id}`)
+        }
+    }
+
 
 }
