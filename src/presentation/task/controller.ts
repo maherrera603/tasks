@@ -13,9 +13,17 @@ export class TaskController {
         return res.status(500).json({error: "Internal Server"});
     }
 
-    public allTasks = (req: Request, res: Response) => {
+    public allTasks = (req: Request, res: Response) => {    
+        const { id } = req.body.user;
+        if(!id) {
+            res.status(403).json({ error: "User unathorized"});
+            return;
+        }
 
-        res.json("allTasks");
+
+        this.taskService.allTasks(id)
+            .then( response => res.json(response))
+            .catch( error => this.handleError(error, res))
     }
 
 

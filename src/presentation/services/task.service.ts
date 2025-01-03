@@ -23,8 +23,16 @@ export class TaskService {
             throw CustomError.internalServer("Internal Server Error");
         }
 
+    }
 
-
+    public async allTasks( user: string){
+        try {
+            
+            const tasks = await TaskModel.find({user});
+            return { tasks }
+        } catch (error) {
+            throw CustomError.internalServer("Internal Server error")
+        }
     }
 
 
