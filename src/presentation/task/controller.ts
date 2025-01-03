@@ -1,9 +1,17 @@
 import { Request, Response } from "express";
+import { CustomError, TaskDTO } from "../../domain";
+import { TaskService } from "../services";
+
 
 export class TaskController {
 
-    constructor(){}
+    constructor(private taskService: TaskService){}
 
+    private handleError( error: unknown, res: Response) {
+
+        if( error instanceof CustomError) return res.status(error.statusCode).json({error: error.message});
+        return res.status(500).json({error: "Internal Server"});
+    }
 
     public allTasks = (req: Request, res: Response) => {
 
@@ -17,7 +25,16 @@ export class TaskController {
 
 
     public createTask = (req: Request, res: Response) => {
-        res.json("createTask");
+        const [error, taskDto] = TaskDTO.create(req.body, req.body.user.id);
+        if(error) {
+            res.status(400).json({error});
+            return;
+        }
+
+        this.taskService.create( taskDto! )
+            .then( response => res.json(response))
+            .catch( error => this.handleError( error, res));
+
     }
 
 

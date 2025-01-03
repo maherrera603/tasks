@@ -12,11 +12,11 @@ const taskSchema = new Schema({
     },
     status: {
         type: Boolean,
-        required: [true, "Status is required"]
+        default: false
     },
     finished_task: {
         type: Date,
-        required: [true, "Finished task is required"]
+        required: [true, "Finished task is required"],
     },
     user: {
         type: Schema.Types.ObjectId,
