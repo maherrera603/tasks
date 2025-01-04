@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { CustomError, TaskDTO } from "../../domain";
 import { TaskService } from "../services";
 import { json } from "stream/consumers";
+import { resolve } from "path";
 
 
 export class TaskController {
@@ -57,7 +58,13 @@ export class TaskController {
 
 
     public deleteTask = (req: Request, res: Response) => {
-        res.json("deleteTask")
+        const { id } = req.params;
+
+
+        this.taskService.deleteTask(id)
+            .then( response => res.json( response ))
+            .catch( error => this.handleError(error, res));
+
     }
 
 }

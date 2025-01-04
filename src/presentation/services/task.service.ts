@@ -38,11 +38,30 @@ export class TaskService {
     public async getTask(id: string) {
         try {
             const task = await TaskModel.findById(id);
+            if(!task) throw CustomError.notFound(`task not found with id: ${id}`)
+            
             return { task }
         } catch (error) {
             throw CustomError.notFound(`task not found with id: ${id}`)
         }
     }
 
+    public async deleteTask( id: string ){
+
+        try {
+            const task = await TaskModel.findById(id);
+
+            if(!task) throw CustomError.notFound(`Task not found with id: ${id}`);
+
+            const { deletedCount } = await TaskModel.deleteOne({_id:id});
+                       
+            return { delete: deletedCount > 0, task }
+
+        } catch (error) {
+            
+            throw CustomError.notFound(`Task not found with id: ${id}`);
+        }
+
+    }
 
 }
