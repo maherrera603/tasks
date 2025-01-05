@@ -46,6 +46,30 @@ export class TaskService {
         }
     }
 
+
+    public async updateTask(taskDto: TaskDTO, idTask: string){
+
+        const existsTask = await TaskModel.findById( idTask );
+        if (!existsTask) throw CustomError.notFound(`Task Not found with id: ${idTask}`);
+
+        try {
+            const task = await TaskModel.findByIdAndUpdate( 
+                idTask, {
+                    ...taskDto
+                }, 
+                {new: true }
+            );
+
+            return { task }
+
+        } catch (error) {
+            throw CustomError.internalServer("Internal Server Error");
+        }
+
+
+
+    }
+
     public async deleteTask( id: string ){
 
         try {

@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { CustomError, TaskDTO } from "../../domain";
 import { TaskService } from "../services";
-import { json } from "stream/consumers";
-import { resolve } from "path";
+
 
 
 export class TaskController {
@@ -53,7 +52,17 @@ export class TaskController {
 
 
     public updateTask = (req: Request, res: Response) => {
-        res.json("updateTasks");
+        const [error, taskDto] = TaskDTO.update(req.body, req.body.user.id);
+        if(error) {
+            res.status(400).json({error});
+            return;
+        }
+
+        const  { id } = req.params;
+        this.taskService.updateTask(taskDto!, id)
+            .then( response => res.json(response))
+            .catch( error  => this.handleError(error, res));
+
     }
 
 

@@ -24,4 +24,20 @@ export class TaskDTO {
         return[undefined, new TaskDTO(task, description, finished_task, user)];
     }
 
+
+    public static update( object: {[key: string]: any}, user: string ): [string?, TaskDTO?]{
+
+        const { task, description, finished_task, status = false } = object;
+
+        if(!task) return ["Missing task"];
+
+        if(!description) return ["Missing description"];
+
+        if(!finished_task) return ["Missing finished_task"];
+
+        if(!user) return ["Missing user"];
+
+        return [ undefined, new TaskDTO(task, description, finished_task, user, status) ]
+    }
+
 }
