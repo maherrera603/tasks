@@ -1,0 +1,392 @@
+{
+	"info": {
+		"_postman_id": "95d991d8-88f1-4d94-9908-d86712318061",
+		"name": "Tasks",
+		"description": "La API de Gestión de Tareas es una solución RESTful diseñada para facilitar la gestión de tareas, administración de usuarios, y un sistema de autenticación seguro. Está organizada en tres módulos principales:\n\n- Auth\n    \n- User\n    \n- Task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26336588"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"prueba\",\n    \"last_name\": \"prueba\",\n    \"phone\": \"3125677898\",\n    \"email\": \"prueba@prueba.com\",\n    \"password\": \"prueba18_*\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/register",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"register"
+							]
+						},
+						"description": "Permite a nuevos usuarios registrarse en la plataforma.\n\ncampos de la peticion\n\n- name: ( requerido )\n    \n- last_name: ( requerido )\n    \n- phone: numero telefonico valido 10 numeros ( requerido )\n    \n- email: formato de correo valido ( requerido )\n    \n- password: ( requerido ) - contraseña de 8 a 12 caracteres incluyendo:\n    \n- Letra mayuscula\n    \n- letra minuscula\n    \n- carateres especiales\n    \n- numeros"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"prueba@prueba.com\",\n    \"password\": \"prueba18_*\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/login",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "Permite a los usuarios autenticarse con credenciales válidas (correo electrónico y contraseña).\n\ncampos de la peticion\n\nemail: formato email valido ( requerido )\n\npassword: contraseña de 8 a 12 caracteres incluyendo: ( requerido )\n\n- Letra mayuscula\n    \n- letra minuscula\n    \n- carateres especiales\n    \n- numeros"
+					},
+					"response": []
+				}
+			],
+			"description": "Este módulo proporciona un sistema seguro para gestionar el acceso a la API mediante autenticación basada en tokens JWT (JSON Web Token)."
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <token>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/user",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"user"
+							]
+						},
+						"description": "Obtiene los detalles del perfil del usuario autenticado.\n\nAuthorization : Bearer"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <token>",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"prueba \",\n    \"last_name\": \"prueba\",\n    \"phone\": \"3125677898\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/user",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"user"
+							]
+						},
+						"description": "Actualiza la información del perfil del usuario autenticado (por ejemplo, nombre, correo electrónico).\n\ncapos de la peticion\n\n- name: ( requerido )\n    \n- last_name: ( requerido )\n    \n- phone: ( requerido ) - el campo debe contener 10 digitos"
+					},
+					"response": []
+				}
+			],
+			"description": "Este módulo permite que los usuarios gestionen la información de su propio perfil. Requiere autenticación para todos los endpoints.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "All tasks",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjc3N2ZhNzczMDlhZTc5OTE2OWM2YjkwIiwiaWF0IjoxNzM2MDM2NjU3LCJleHAiOjE3MzYwNzk4NTd9.thXK9I2tDKtQ5hbuHgoUTnAnQUas92PrbNiUMQRnnUY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/tasks/",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"tasks",
+								""
+							]
+						},
+						"description": "Obtiene una lista de tareas asociadas al usuario autenticado."
+					},
+					"response": []
+				},
+				{
+					"name": "Get task",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjc3N2ZhNzczMDlhZTc5OTE2OWM2YjkwIiwiaWF0IjoxNzM1OTE2MTY5LCJleHAiOjE3MzU5NTkzNjl9.AOtY3m6P12ktBE29KjC0lJFej0X5JgQnryD6eBYhImk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/tasks/:idTask",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"tasks",
+								":idTask"
+							],
+							"variable": [
+								{
+									"key": "idTask",
+									"value": ""
+								}
+							]
+						},
+						"description": "Obtiene los detalles de una tarea específica.\n\nparametro de la url:\n\n- idTask: identificador de la tarea a consultar"
+					},
+					"response": []
+				},
+				{
+					"name": "Create task",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjc3N2ZhNzczMDlhZTc5OTE2OWM2YjkwIiwiaWF0IjoxNzM1OTE2MTY5LCJleHAiOjE3MzU5NTkzNjl9.AOtY3m6P12ktBE29KjC0lJFej0X5JgQnryD6eBYhImk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"task\": \"Terminar api de task\",\n    \"description\": \"Terminar el desarrollo de la aplicacion task para realizar su documentacion respectiva\",\n    \"finished_task\": \"07-01-2025\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/tasks",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"tasks"
+							]
+						},
+						"description": "Crea una nueva tarea para el usuario autenticado.  \n**Cuerpo de la solicitud:** Información de la tarea (título, descripción, fecha límite, estado, etc.).\n\ncampos de la peticion:\n\n- task: ( requerido ) - nombre de la tarea\n    \n- description: ( requerido ) - descripcion de la tarea\n    \n- finished_task: ( requerido ) - fecha de finalizacion de la tarea"
+					},
+					"response": []
+				},
+				{
+					"name": "Update task",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjc3N2ZhNzczMDlhZTc5OTE2OWM2YjkwIiwiaWF0IjoxNzM2MDM2NjU3LCJleHAiOjE3MzYwNzk4NTd9.thXK9I2tDKtQ5hbuHgoUTnAnQUas92PrbNiUMQRnnUY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"task\": \"Terminando api de task\",\n    \"description\": \"Con el end point put se dara por terminado la api como desarrollada\",\n    \"finished_task\": \"2025-01-04T05:00:00.000Z\",\n    \"status\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/tasks/:idTask",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"tasks",
+								":idTask"
+							],
+							"variable": [
+								{
+									"key": "idTask",
+									"value": ""
+								}
+							]
+						},
+						"description": "Actualiza los detalles de una tarea específica.\n\nparametro url:\n\n- idTask: Identificador de la tarea a actualizar\n    \n\ncapos de la peticion:\n\n- task: ( requerido ) - nombre de la tarea\n    \n- description: ( requerido ) - descripcion de la tarea\n    \n- finished_task: ( requerido ) - fecha de finalizacion de la tarea\n    \n- status: ( opcional ) - ( default: false) - estado de la tarea"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete task",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <token>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/tasks/:idTask",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"tasks",
+								":idTask"
+							],
+							"variable": [
+								{
+									"key": "idTask",
+									"value": ""
+								}
+							]
+						},
+						"description": "Elimina una tarea del sistema.\n\nparametros de la url:\n\n- idTask: Identificador de la tarea a eliminar"
+					},
+					"response": []
+				}
+			],
+			"description": "Este módulo maneja la creación, actualización, consulta y eliminación de tareas.",
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server",
+			"value": "http://localhost:3000/api/v1",
+			"type": "string"
+		}
+	]
+}
